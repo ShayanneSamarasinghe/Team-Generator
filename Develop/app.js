@@ -1,3 +1,5 @@
+
+
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
@@ -9,6 +11,66 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+
+
+let ID = 1;
+
+async function main(){
+    console.log (`[main] Starting ...`)
+    const team = []
+
+    const managerData = await inquirer.prompt ([
+        {name: "name", type: "input", message: "What is the managers name?"},
+        {name: "email", type: "input", message: "What is the managers email?"},
+        {name: "officeNumber", type: "input", message: "What is their office number?"},
+        {name: "count", type: "input", message: "How many people work under them?"},
+
+
+
+
+    ])
+
+    team.push (new Manager (managerData.name, ID++, managerData.email, managerData.officeNumber))
+
+    for (let userCnt=1; userCnt <= managerData.count; userCnt++){
+        
+        const user = await inquirer.prompt ([
+            {name: "type", type: "list", message: `For person ${userCnt}/${managerData.count}`, 
+            choices : ["intern", "engineer"]}
+
+        ])
+
+        if (user.type == "engineer"){
+            const userData = await inquirer.prompt([
+                {name: "name", type: "input", message: "What is the engineers name?"},
+                {name: "email", type: "input", message: "What is the engineers email?"},
+                {name: "github", type: "input", message: "What is their github?"}
+            ])
+        
+            team.push(new Engineer (userData.name, ID++, userData.email, userData.github))
+
+
+
+        }else{
+            const userData = await inquirer.prompt ([
+                {name: "name", type: "input", message: "What is the interns name?"},
+                {name: "email", type: "input", message: "What is the interns email?"},
+                {name: "school", type: "input", message: "What is their school?"}
+            ])
+            team.push(new Intern (userData.name, ID++, userData.email, userData.github))
+
+        }
+
+    }
+
+    const html = render(team)
+
+    fs.writeFileSync(outputPath, html);
+    console.log (`Finished writing the file, avaiple in ${outputPath}`)
+
+
+}
+main();
 
 
 // Write code to use inquirer to gather information about the development team members,
