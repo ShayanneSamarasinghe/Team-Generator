@@ -17,7 +17,7 @@ class Employee {
         return this.email
     }
     getRole(){
-        this.role = role
+        return this.role
     }
 
 

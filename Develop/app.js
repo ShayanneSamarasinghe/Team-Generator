@@ -57,7 +57,7 @@ async function main(){
                 {name: "email", type: "input", message: "What is the interns email?"},
                 {name: "school", type: "input", message: "What is their school?"}
             ])
-            team.push(new Intern (userData.name, ID++, userData.email, userData.github))
+            team.push(new Intern (userData.name, ID++, userData.email, userData.school))
 
         }
 
@@ -66,7 +66,7 @@ async function main(){
     const html = render(team)
 
     fs.writeFileSync(outputPath, html);
-    console.log (`Finished writing the file, avaiple in ${outputPath}`)
+    console.log (`Finished writing the file, avaiable in ${outputPath}`)
 
 
 }
